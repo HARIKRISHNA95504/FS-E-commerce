@@ -1,0 +1,19 @@
+.cartitems{
+    margin: 100px 170px;
+}
+.cartitems hr{
+    height: 1px;
+    color:#5f5757;
+    border: 1px solid;
+}
+.cartitems-format-main{
+    display: grid;
+    grid-template-columns:0.5fr 2fr  1fr 1fr 1fr 1fr;
+    align-items: center;
+    gap: 75px;
+    padding: 20px 0px;
+    color: #454545;
+    font-weight: 18px;
+    font-weight: 600;
+
+}

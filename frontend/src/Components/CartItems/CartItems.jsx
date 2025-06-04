@@ -24,13 +24,44 @@ const CartItems = ()=>{
                                         <p>{e.name}</p>
                                         <p>${e.new_price}</p>
                                         <button className="cartitems-quantity">{cartItems[e.id]}</button>
-                                        <p>{e.new_price*cartItems[e.id]}</p>
-                                        <img src={remove_icon} alt="" onClick={()=>{removeFromCart(e.id)}} />
+                                        <p>${e.new_price*cartItems[e.id]}</p>
+                                        <img src={remove_icon} className="cartitems-remove-icon" alt="" onClick={()=>{removeFromCart(e.id)}} />
                                     </div>
                                     <hr />
                                 </div>
                 }
+                return null;
             })}
+            <div className="cartitems-down">
+                <div className="cartitems-total">
+                    <h1>cart Totals</h1>
+                    <div>
+                        <div className="cartitems-total-item">
+                            <p>SubTotal</p>
+                            <p>Total Cart Value ${0}</p>
+                        </div>
+                        <hr />
+                        <div className="cartitems-total-item">
+                            <p>Shipping fee</p>
+                            <p>Free</p>
+                        </div>
+                        <hr />
+                        <div className="cartitems-total-item">
+                            <h3>Total</h3>
+                            <h3>${0}</h3>
+                        </div>
+                    </div>
+                    <button>PROCEED TO CHECKOUT</button>
+
+                </div>
+                <div className="cartitems-promocode">
+                    <p>If You have a Promocode Enter it Here</p>
+                    <div className="cartitems-promobox">
+                        <input type="text" placeholder="Enter Promocode" />
+                        <button>Submit</button>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }

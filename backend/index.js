@@ -199,10 +199,77 @@ app.post('/upload',upload.single('product'),(req,res)=>{
     }
   })
 
+  // Creating end point for new collection data
+
+  app.get('/newcollections',async(request,response)=>{
+        let products = await Product.find({});
+        let newcollection = products.slice(1).slice(-8);
+        console.log("New collection fetched")
+        response.send(newcollection);
+  })
+
+  // Creating end-point for Popular in women section
+  app.get('/popularinwomen',async(request,response)=>{
+        let products = await Product.find({category:"women"})
+        let popular_in_women = products.slice(0,4)
+        console.log("Popular in Women fetched")
+        response.send(popular_in_women)
+  })
+  // creating middleware to fetch user
+
+  const fetchUser = async(request,response,next)=>{
+        const token = request.header('auth-token');
+        if(!token){
+            response.status(401).send({
+                errors:"Please Authenticate using valid token"
+            })
+
+        }else{
+            try{
+                const data = jwt.verify(token,'secret_ecom');
+                request.user = data.user
+                next();
+            }catch(error){
+                response.status(401)
+                response.send({
+                    error:"please authenticate a valid token"
+                })
+            }
+        }
+  }
+
+  // creating endpoint for adding products in cart data
+  app.post('/addtocart',fetchUser,async(request,response)=>{
+     let userData = await Users.findOne({_id:request.user.id})
+     userData.cartData[request.body.itemId]+=1;
+     await Users.findOneAndUpdate({_id:request.user.id},{cartData:userData.cartData})
+     response.send("Added")
+    })
+
+   // creating end point to remove product from cart data
+   app.post('/removefromcart',fetchUser,async(request,response)=>{
+    console.log("Added",request.body.itemId)
+    console.log("Removed",request.body.itemId)
+     let userData = await Users.findOne({_id:request.user.id})
+     if(userData.cartData[request.body.itemId]>0)
+     userData.cartData[request.body.itemId] -=1;
+     await Users.findOneAndUpdate({_id:request.user.id},{cartData:userData.cartData})
+     response.send("Removed") 
+   })
+   
+   // creating endpoint to get cart data
+   app.post('/getcart',fetchUser,async(request,response)=>{
+    console.log("Get cart");
+    let userData = await Users.findOne({_id:request.user.id});
+    response.json(userData.cartData);
+   })
+
+
+
 app.listen(port,(error)=>{
     if(!error){
-        console.log('Server Running on Port' +port)
+        console.log('Server Running on Port' + port)
     }else{
-        console.log("Error"+error)
+        console.log("Error" + error)
     }
 })

@@ -2,7 +2,7 @@
 # step-1
 * create react app
 ```
-npx create react app .
+npx create-react-app .
 ```
 * install react router dom
 ```
